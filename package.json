@@ -1,0 +1,29 @@
+{
+  "name": "budgety",
+  "version": "1.0.0",
+  "description": "A budget app based on JavaScript.",
+  "main": "app2.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jitsarkar25/budgetApp.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jitsarkar25/budgetApp/issues"
+  },
+  "homepage": "https://github.com/jitsarkar25/budgetApp#readme",
+  "devDependencies": {
+    "babel-core": "^6.24.0",
+    "babel-loader": "^6.4.1",
+    "babel-preset-env": "^1.2.2",
+    "webpack": "^2.3.2"
+  },
+  "dependencies": {
+    "css-loader": "^0.27.3",
+    "style-loader": "^0.16.1"
+  }
+}
