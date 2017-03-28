@@ -367,5 +367,5 @@ class Controller {
     
     new Controller(new BudgetController,new UIController);
     UIController.displayDate();
-    console.log("started");
+   // console.log("started");
 }());
