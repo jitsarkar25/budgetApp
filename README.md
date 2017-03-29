@@ -1,4 +1,11 @@
 # budgetApp
-A budget app based on JavaScript.
+A budget calculation app based on JavaScript. It takes input in the form of Income or Expense and calculates the budget and the percentage of each income.
 
-Coded in a controller design pattern, where the UIcontroller and the budget controller works independantly of each other
+Installation
+------------
+
+1. clone this repo on a local machine
+2. Run `npm install`
+3. Run `npm run dev`
+
+
