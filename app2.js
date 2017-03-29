@@ -1,5 +1,5 @@
 
-
+//expense class used to store the expenses
 class Expense{
     
     constructor(id,desc,value){
@@ -9,7 +9,7 @@ class Expense{
         this.percentage = -1;
     }
 
-    
+    //calculates the percentage of each expense corresponding to the total income
     calPercentage (totalIncome) {
       
         //checking if total income is greater than 0, otherwise we cant have expense percentage
@@ -21,11 +21,13 @@ class Expense{
         
     };
     
+    //returns the expense percentage
     getPercentage (){
         return this.percentage;
     }
 }
 
+//income class is used to store the incomes
 class Income{
     
     constructor(id,desc,value) {
@@ -36,10 +38,12 @@ class Income{
     
 }
 
+//handles everything related to the calculation of the budget
 class BudgetController{
     
     constructor(){
     
+    //daa structure used to store the income and expense data    
       let data = {
       allitems : {
           inc : [],
@@ -53,6 +57,7 @@ class BudgetController{
       percentage : -1    
     };
     
+        //calculates the total income and expense
         let calculateTotal = function(type){
         let sum = 0;
         
@@ -62,7 +67,7 @@ class BudgetController{
         
     };
     
-        
+        //adds a new income or expense to the data structure
         this.additem =function(type,desc,value)
         {
             let newItem,ID;
@@ -85,10 +90,12 @@ class BudgetController{
             return newItem;
         };
         
+        //returns the private data structure 
         this.getData = function(){
             return data.allitems.exp;
         };
         
+        //deletes an income and expense from the data structure
         this.deleteItem = function(type,id){
             
             for(let i = 0 ; i < data.allitems[type].length ; i++){
@@ -100,15 +107,20 @@ class BudgetController{
             }
         }
         
+        //caluculates the percentage of expense
         this.calculatePercentage = function(){
             
             data.allitems.exp.forEach((cur) => cur.calPercentage(data.totals.inc));
             
         };
         
+        //calculates the final budget
         this.calculateBudget = function(){
             
+            //calculating total expense
             calculateTotal("exp");
+            
+            //calculating the toal income
             calculateTotal("inc");
             
             data.budget = data.totals.inc - data.totals.exp;
@@ -120,6 +132,7 @@ class BudgetController{
             }
         }
         
+        //returns the percentage of all the expenses
         this.getPercentage = function(){
             
             var allper = data.allitems.exp.map((cur) =>  cur.getPercentage());
@@ -127,6 +140,7 @@ class BudgetController{
             return allper;
         }
         
+        //returns the budget
         this.getBudget = function(){
           return {
             budget : data.budget,
@@ -140,22 +154,13 @@ class BudgetController{
    
 }
 
-/*let bc = new BudgetController();
-bc.additem("exp","car",500);
-bc.additem("exp","car",100);
-bc.additem("inc","car",1000);
-bc.calculateBudget();
-bc.calculatePercentage();
-console.log(bc.getData());
-let perc = bc.getPercentage();
-let budget = bc.getBudget();
-console.log(perc);
-console.log(budget);*/
 
+//handles all the UI events 
 class UIController{
     
     constructor(){
         
+    //object containing the class and ids of the html tags to be modified    
       let DOMStrings = {
       type : "type__select",
       desc : "description",
@@ -172,6 +177,7 @@ class UIController{
       date : "budget__title--month"    
     };
     
+    //takes the input from the input boxes    
     this.getInput = function (){
        // console.log("here");
        return {
@@ -180,7 +186,8 @@ class UIController{
          value : parseFloat(document.getElementById(DOMStrings.value).value )
        }
     };
-        
+    
+    //adds an expense or income to the UI    
     this.addItemToUI = function(obj,type){
         var html,newhtml,root;
         
@@ -202,7 +209,8 @@ class UIController{
         document.getElementById(DOMStrings.value).value="";
             
     };
-        
+    
+    //displays the final budget at the top of the screen    
     this.displaybudget = function(obj){
             
             if(obj.budget > 0){
@@ -219,11 +227,11 @@ class UIController{
             
         };
 
-        
+    //updates the percentage of expense when a new income or expense is added/removed    
     this.updatepercentage = function(percentage){
             let fields = document.querySelectorAll(DOMStrings.percentage);
             
-            //creating a function to enale Foreach loop in lists
+            //creating a function to enable Foreach loop in lists
             let listsForeach = function(list,callback){
               
                 for(var i = 0; i < list.length ; i++){
@@ -242,15 +250,18 @@ class UIController{
             
         }
     
+    //removes an income or expense from the UI
     this.deleteIemfromUI = function (selectorID){
             document.getElementById(selectorID).parentNode.removeChild(document.getElementById(selectorID));
         };
         
+    //returns the DOMStrings    
     this.getDOMStrings = function (){
              return DOMStrings;
          }    
 }
-    
+ 
+    // displays the month adn year o top of the page
   static displayDate(){
             let  date = new Date();
             
@@ -263,6 +274,7 @@ class UIController{
 
 }
 
+//takes intance of BudgetController and UIController and has acces to their public methods
 class Controller {
     
     constructor(budgetCtrl,UICtrl){
@@ -285,6 +297,7 @@ class Controller {
         document.getElementById(DOMStrings.container).addEventListener("click",() => ctrlDeletion(event)); 
     }();
         
+        //adds a new income or expense
         var ctrlAddition = function () {
         let input,newItem;
         
@@ -306,7 +319,8 @@ class Controller {
         }
         
     };
-        
+    
+    //updates the budget when a new income/expense in created or removed    
     var updateBudget = function() {
         
         //calculate the budget
@@ -318,7 +332,8 @@ class Controller {
         //display the budget to the UI
         UICtrl.displaybudget(newBudget);
     }; 
-        
+    
+    //updates the percentage of expense when a new income or expense is added or removed    
     var updatePercentage = function() {
         
         //calculate the pecentage of expense
@@ -331,7 +346,8 @@ class Controller {
         UICtrl.updatepercentage(per);
         
     } 
-    
+
+    //deletes an income or expense
     var ctrlDeletion = function(event){
         let itemID,type,id,newBudget;
         
